@@ -25,8 +25,8 @@ function render(rounds) {
         formSection.classList.add('form-step')
         formSection.innerHTML = `
         <similarity-test
-            path-x="audio/normalized/${round.a}"
-            path-y="audio/normalized/${round.b}"
+            path-x="audio/final/faded/${round.a}"
+            path-y="audio/final/faded/${round.b}"
         >
         </similarity-test>
         `
@@ -56,7 +56,7 @@ function updatePage(page) {
     history.replaceState({}, '', `#${page}`)
 
     // Update timeline
-    progress.style.setProperty('--progress', (page - 1) / (rounds.length - 1 + 2))
+    progress.style.setProperty('--progress', (page - 1) / (steps.childElementCount - 1))
 
     // Update prev/next buttons
     prev.setAttribute('data-disabled', page == 1)
@@ -92,6 +92,28 @@ document.addEventListener('keydown', (event) => {
         updatePage(page)
     }
 })
+
+function click(button) {
+    let audio = button.querySelector('audio')
+    let paused = audio.paused
+
+    document.querySelectorAll('audio').forEach(audio => audio.pause())
+    document.querySelectorAll('label').forEach(label => label.classList.remove('active'))
+
+    if (paused) {
+        audio.currentTime = 0
+        audio.play()
+    } else {
+        audio.pause()
+    }
+
+    audio.addEventListener('timeupdate', (e) => {
+        let seekPosition = e.target.currentTime * (100 / e.target.duration)
+        button.style.setProperty('--progress-value', seekPosition)
+    })
+
+    button.classList.add('active')
+}
 
 document.querySelectorAll('.form-step label.audio').forEach(
     button => button.addEventListener('click', (e) => {

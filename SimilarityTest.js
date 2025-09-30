@@ -14,11 +14,11 @@ class SimilarityTest extends HTMLElement {
         <div class="audios">
             <label class="audio x" for="${id}-x">
                 X
-                <audio src="audio/normalized/${id}"></audio>
+                <audio src="audio/final/faded/${id}"></audio>
             </label>
             <label class="audio y" for="${id}-y">
                 Y
-                <audio src="audio/normalized/${id}"></audio>
+                <audio src="audio/final/faded/${id}"></audio>
             </label>
             <input type="radio" name="${id}" id="${id}-x" value="${id}-x">
             <input type="radio" name="${id}" id="${id}-y" value="${id}-y">
@@ -30,7 +30,7 @@ class SimilarityTest extends HTMLElement {
         <datalist id="values">
             <option value="0" label="Très similaires"></option>
             <option value="5" label=""></option>
-            <option value="10" label="Très différents"></option>
+            <option value="10" label="Pas du tout similaires"></option>
         </datalist>
 
         <style>
@@ -51,11 +51,12 @@ class SimilarityTest extends HTMLElement {
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-                    width: 350px;
+                    width: 420px;
                 }
 
                 option {
                     padding: 0;
+                    // width: 100px;
                 }
 
                 input[type="range"] {

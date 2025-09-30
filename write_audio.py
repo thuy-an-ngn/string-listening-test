@@ -18,22 +18,25 @@ missing = dataset[
 dataset = dataset[
     (dataset.session.isin([1, 2, 3]))
     & (dataset.condition == "aveugle")
-    & (dataset.player.isin(["Paul", "Clara", "SMD"]))
+    & (dataset.player.isin(["Norimi", "SMD"]))
     # & (~dataset.extract.isin(["free", "?"]))
     & (dataset.extract.isin(["tchai"]))
 ].drop_duplicates(subset=["player", "violin", "extract", "session"])
 dataset = pd.concat([dataset, missing], ignore_index=True)
 dataset.rename(columns={"extract": "excerpt"}, inplace=True)
 
-# for i, row in dataset.iterrows():
-#     offset = row["start"]
-#     duration = row["end"] - offset
-#     audio, sr = librosa.load(
-#         str(row["file"]), sr=None, offset=offset, duration=duration, mono=False
-#     )
-#     scipy.io.wavfile.write(
-#         f"audio/{row.violin}-{row.player}-{row.session}.wav", sr, audio.T
-#     )
+for i, row in dataset.iterrows():
+    offset = row["start"]
+    # if row.player == "Clara":
+    offset -= 1
+    duration = row["end"] - offset
+    duration = 10
+    audio, sr = librosa.load(
+        str(row["file"]), sr=None, offset=offset, duration=duration, mono=False
+    )
+    scipy.io.wavfile.write(
+        f"audio/{row.violin}-{row.player}-{row.session}.wav", sr, audio.T
+    )
 
 patterns = (
     [1, 2, 3],
@@ -104,5 +107,5 @@ tests.append(
     )
 )
 
-with open("test2.json", "w") as f:
-    json.dump(tests, f)
+# with open("test2.json", "w") as f:
+#    json.dump(tests, f)
