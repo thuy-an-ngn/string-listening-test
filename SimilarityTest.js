@@ -28,9 +28,9 @@ class SimilarityTest extends HTMLElement {
         <input type="range" name="" id="" min="0" max="10" value="5" list="values" onkeydown="event.preventDefault()">
 
         <datalist id="values">
-            <option value="0" label="Très similaires"></option>
+            <option value="0" label="Très peu différents"></option>
             <option value="5" label=""></option>
-            <option value="10" label="Pas du tout similaires"></option>
+            <option value="10" label="Très différents"></option>
         </datalist>
 
         <style>

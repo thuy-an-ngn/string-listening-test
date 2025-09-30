@@ -17,17 +17,20 @@ missing = dataset[
 ]
 dataset = dataset[
     (dataset.session.isin([1, 2, 3]))
-    & (dataset.condition == "aveugle")
+    # & (dataset.condition == "aveugle")
     & (dataset.player.isin(["Norimi", "SMD"]))
     # & (~dataset.extract.isin(["free", "?"]))
     & (dataset.extract.isin(["tchai"]))
-].drop_duplicates(subset=["player", "violin", "extract", "session"])
+].drop_duplicates(subset=["player", "violin", "extract", "session", "condition"])
 dataset = pd.concat([dataset, missing], ignore_index=True)
 dataset.rename(columns={"extract": "excerpt"}, inplace=True)
+dataset["session"] = dataset["session"].apply(str)
+dataset.loc[dataset.condition == "non-aveugle", "session"] += "na"
+
+print(dataset)
 
 for i, row in dataset.iterrows():
     offset = row["start"]
-    # if row.player == "Clara":
     offset -= 1
     duration = row["end"] - offset
     duration = 10
@@ -102,8 +105,8 @@ for player in ["SMD", "Clara"]:
 
 tests.append(
     (
-        {"player": "Clara", "violin": "A", "session": 1},
         {"player": "SMD", "violin": "A", "session": 1},
+        {"player": "Clara", "violin": "A", "session": 1},
     )
 )
 
