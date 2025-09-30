@@ -1,5 +1,7 @@
 class SimilarityTest extends HTMLElement {
 
+    root = 'audio/final/'
+
     static get observedAttributes() {
         return [`path-x`, `path-y`];
     }
@@ -14,11 +16,11 @@ class SimilarityTest extends HTMLElement {
         <div class="audios">
             <label class="audio x" for="${id}-x">
                 X
-                <audio src="audio/final/faded/${id}"></audio>
+                <audio src=""></audio>
             </label>
             <label class="audio y" for="${id}-y">
                 Y
-                <audio src="audio/final/faded/${id}"></audio>
+                <audio src=""></audio>
             </label>
             <input type="radio" name="${id}" id="${id}-x" value="${id}-x">
             <input type="radio" name="${id}" id="${id}-y" value="${id}-y">

@@ -1,36 +1,14 @@
 [
     [
         {
-            "player": "Paul",
-            "violin": "A",
-            "session": 2
-        },
-        {
-            "player": "Paul",
+            "player": "SMD",
             "violin": "A",
             "session": 1
         },
         {
-            "player": "Paul",
-            "violin": "A",
-            "session": 3
-        }
-    ],
-    [
-        {
-            "player": "Clara",
+            "player": "SMD",
             "violin": "A",
             "session": 2
-        },
-        {
-            "player": "Clara",
-            "violin": "A",
-            "session": 3
-        },
-        {
-            "player": "Clara",
-            "violin": "A",
-            "session": 1
         }
     ],
     [
@@ -43,6 +21,97 @@
             "player": "SMD",
             "violin": "A",
             "session": 3
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "B",
+            "session": 1
+        },
+        {
+            "player": "SMD",
+            "violin": "B",
+            "session": 2
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "B",
+            "session": 1
+        },
+        {
+            "player": "SMD",
+            "violin": "B",
+            "session": 3
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "C",
+            "session": 1
+        },
+        {
+            "player": "SMD",
+            "violin": "C",
+            "session": 2
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "C",
+            "session": 1
+        },
+        {
+            "player": "SMD",
+            "violin": "C",
+            "session": 3
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "A",
+            "session": 3
+        },
+        {
+            "player": "SMD",
+            "violin": "B",
+            "session": 3
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "C",
+            "session": 1
+        },
+        {
+            "player": "SMD",
+            "violin": "A",
+            "session": 1
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "A",
+            "session": 1
+        },
+        {
+            "player": "SMD",
+            "violin": "A",
+            "session": "1na"
+        }
+    ],
+    [
+        {
+            "player": "SMD",
+            "violin": "A",
+            "session": 2
         },
         {
             "player": "SMD",
@@ -52,103 +121,121 @@
     ],
     [
         {
-            "player": "Paul",
-            "violin": "B",
+            "player": "Norimi",
+            "violin": "A",
             "session": 1
         },
         {
-            "player": "Paul",
-            "violin": "B",
+            "player": "Norimi",
+            "violin": "A",
             "session": 2
+        }
+    ],
+    [
+        {
+            "player": "Norimi",
+            "violin": "A",
+            "session": 1
         },
         {
-            "player": "Paul",
-            "violin": "B",
+            "player": "Norimi",
+            "violin": "A",
             "session": 3
         }
     ],
     [
         {
-            "player": "Clara",
-            "violin": "B",
-            "session": 2
-        },
-        {
-            "player": "Clara",
+            "player": "Norimi",
             "violin": "B",
             "session": 1
         },
         {
-            "player": "Clara",
-            "violin": "B",
-            "session": 3
-        }
-    ],
-    [
-        {
-            "player": "SMD",
-            "violin": "B",
-            "session": 1
-        },
-        {
-            "player": "SMD",
-            "violin": "B",
-            "session": 3
-        },
-        {
-            "player": "SMD",
+            "player": "Norimi",
             "violin": "B",
             "session": 2
         }
     ],
     [
         {
-            "player": "Paul",
+            "player": "Norimi",
+            "violin": "B",
+            "session": 2
+        },
+        {
+            "player": "Norimi",
+            "violin": "B",
+            "session": 3
+        }
+    ],
+    [
+        {
+            "player": "Norimi",
             "violin": "C",
             "session": 1
         },
         {
-            "player": "Paul",
+            "player": "Norimi",
+            "violin": "C",
+            "session": 2
+        }
+    ],
+    [
+        {
+            "player": "Norimi",
             "violin": "C",
             "session": 2
         },
         {
-            "player": "Paul",
+            "player": "Norimi",
             "violin": "C",
             "session": 3
         }
     ],
     [
         {
-            "player": "Clara",
-            "violin": "C",
-            "session": 2
+            "player": "Norimi",
+            "violin": "A",
+            "session": 1
         },
         {
-            "player": "Clara",
-            "violin": "C",
-            "session": 3
-        },
-        {
-            "player": "Clara",
-            "violin": "C",
+            "player": "Norimi",
+            "violin": "B",
             "session": 1
         }
     ],
     [
         {
-            "player": "SMD",
+            "player": "Norimi",
             "violin": "C",
+            "session": 1
+        },
+        {
+            "player": "Norimi",
+            "violin": "A",
+            "session": 1
+        }
+    ],
+    [
+        {
+            "player": "Norimi",
+            "violin": "A",
             "session": 2
         },
         {
-            "player": "SMD",
-            "violin": "C",
-            "session": 3
-        },
+            "player": "Norimi",
+            "violin": "A",
+            "session": "2na"
+        }
+    ],
+    [
         {
             "player": "SMD",
-            "violin": "C",
+            "violin": "A",
+            "session": 1
+        },
+        {
+            "player": "Norimi",
+            "violin": "A",
             "session": 1
         }
     ]

@@ -3,14 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
     <title>Document</title>
-    <link rel="stylesheet" href="main.css">
+    <link href="main.css" rel="stylesheet">
     <script src="SimilarityTest.js"></script>
 </head>
 
 <body>
-
     <header>
         <ol id="steps">
             <li></li>
@@ -19,85 +18,48 @@
         </ol>
         <div id="progress"></div>
     </header>
-
     <form>
         <div class="form-step active">
             <div id="intro">
-                <h1>Test d'écoute : similarité entre violons</h1>
+                <h1>Test d'écoute : dissimilarité entre violons</h1>
                 <p>Merci de prendre part à ce test d'écoute !</p>
-                <p>Les règles sont simples : à chaque tour vous aurez à écouter deux enregistrements de violon. Vous
-                    devrez juger de la <b>dissimilarité</b> (ou <i>différence</i>) <b>entre les deux violons joués</b>.
-                    Vous
-                    utiliserez une
-                    échelle de dix valeurs
-                    allant de "très peu dissimilaires" (= <i>très peu différents</i>) à "très dissimilaires" (= <i>très
-                        différents</i>),
-                    <b>indépendamment</b> de l'interprétation
-                    musicale.
-                </p>
-                <p>Appuyez sur X ou Y pour écouter un enregistrement. Appuyez de nouveau pour mettre en pause. Utilisez
-                    le slider pour noter la dissimilarité des violons, puis passez au tour suivant en cliquant sur la
-                    flèche en bas à droite.</p>
+                <p>Les règles sont simples : à chaque tour vous aurez à écouter deux enregistrements de violon. Vous devrez juger de la <b>dissimilarité</b> (ou <i>différence</i>) <b>entre les deux violons joués</b>. Vous utiliserez une échelle de dix valeurs allant de "très peu dissimilaires" (= <i>très peu différents</i>) à "très dissimilaires" (= <i>très différents</i>), <b>indépendamment</b> de l'interprétation musicale.</p>
+                <p>Appuyez sur X ou Y pour écouter un enregistrement. Appuyez de nouveau pour mettre en pause. Utilisez le slider pour noter la dissimilarité des violons, puis passez au tour suivant en cliquant sur la flèche en bas à droite.</p>
                 <p>Bon courage !</p>
             </div>
         </div>
-
         <div class="form-step">
             <div id="intro">
                 <h2>Familiarisation :</h2>
-                <p>Voici six extraits qui sont représentatifs de la variabilité que vous pourrez entendre durant ce
-                    test.</p>
-                <p>Comparez la dissimilarité des violons joués dans ces six extraits afin de vous faire votre propre
-                    échelle de notation.</p>
-
+                <p>Voici six extraits qui sont représentatifs de la variabilité que vous pourrez entendre durant ce test.</p>
+                <p>Comparez la dissimilarité des violons joués dans ces six extraits afin de vous faire votre propre échelle de notation.</p>
             </div>
             <div class="audios">
-                <label class="audio x" for="${id}-x">
-                    1
-                    <audio src="audio/final/faded/A-Norimi-1.wav"></audio>
-                </label>
+                <label class="audio">1<audio src="audio/final/faded/A-Norimi-1.wav"></audio></label>
 
-                <label class="audio x" for="${id}-x">
-                    2
-                    <audio src="audio/final/faded/A-Norimi-3.wav"></audio>
-                </label>
+                <label class="audio">2<audio src="audio/final/faded/A-Norimi-3.wav"></audio></label>
 
-                <label class="audio x" for="${id}-x">
-                    3
-                    <audio src="audio/final/faded/A-Norimi-2.wav"></audio>
-                </label>
+                <label class="audio">3<audio src="audio/final/faded/A-Norimi-2.wav"></audio></label>
 
-                <label class="audio x" for="${id}-x">
-                    4
-                    <audio src="audio/final/faded/A-SMD-1.wav"></audio>
-                </label>
+                <label class="audio">4<audio src="audio/final/faded/A-SMD-1.wav"></audio></label>
 
-                <label class="audio x" for="${id}-x">
-                    5
-                    <audio src="audio/final/faded/A-SMD-3.wav"></audio>
-                </label>
+                <label class="audio">5<audio src="audio/final/faded/A-SMD-3.wav"></audio></label>
 
-                <label class="audio x" for="${id}-x">
-                    6
-                    <audio src="audio/final/faded/C-SMD-3.wav"></audio>
-                </label>
+                <label class="audio">6<audio src="audio/final/faded/C-SMD-3.wav"></audio></label>
             </div>
         </div>
 
         <div class="form-step">
-            <div id="conclu">
-                <button>Sauvegarder</button>
-            </div>
+            <div id="conclu"><button>Sauvegarder</button></div>
         </div>
     </form>
 
     <footer>
-        <button id="prev">&#8249;</button>
-        <button id="next">&#8250;</button>
+        <button id="prev">‹</button>
+        <button id="next">›</button>
     </footer>
 
     <script src="main.js"></script>
-
 </body>
 
 </html>
