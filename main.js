@@ -77,7 +77,7 @@ function updatePage(page) {
     form.children[page - 1].classList.add('active')
 }
 
-const ROOT = 'audio/final/'
+const ROOT = 'audio/faded/'
 
 let rounds = []
 fetch('test.json')
