@@ -26,13 +26,13 @@ class SimilarityTest extends HTMLElement {
             <input type="radio" name="${id}" id="${id}-y" value="${id}-y">
         </div>
         <div></div>
-        <p>Les violons X et Y sont :</p>
+        <p>Violins X and Y are :</p>
         <input type="range" name="" id="" min="0" max="10" value="5" list="values" onkeydown="event.preventDefault()">
 
         <datalist id="values">
-            <option value="0" label="Pas du tout différents"></option>
+            <option value="0" label="Not at all different"></option>
             <option value="5" label=""></option>
-            <option value="10" label="Très différents"></option>
+            <option value="10" label="Very different"></option>
         </datalist>
 
         <style>
