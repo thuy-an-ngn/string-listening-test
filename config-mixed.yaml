@@ -1,0 +1,37 @@
+title: "Mixed Evaluation Test"
+testType: "similarity" # Default type
+intro:
+  title: "Mixed Test"
+  text:
+    - "This test contains both <b>Similarity Ratings</b> and <b>ABX</b> comparisons."
+    - "Please follow the instructions on each page."
+familiarization:
+  title: "Examples"
+  text: "Review these sounds before starting."
+  audios:
+    - label: "Ref"
+      src: "audio/faded/A-Norimi-1.wav"
+test:
+  audioRoot: "audio/"
+  validate: true
+  similarity:
+    scale: { min: 0, max: 10, default: 5, labels: { min: "Same", max: "Different" } }
+    instruction: "How different are these two?"
+  abx:
+    instruction: "Which one matches X?"
+  rounds:
+    - type: "similarity"
+      a: "faded/A-SMD-1.wav"
+      b: "faded/A-SMD-2.wav"
+    - type: "abx"
+      a: "P1-VA-E1.0.wav"
+      b: "P1-VB-E1.0.wav"
+      x: "P2-VA-E1.1.wav"
+    - type: "similarity"
+      a: "faded/B-SMD-1.wav"
+      b: "faded/B-SMD-2.wav"
+conclusion:
+  buttonText: "Finish"
+  instruction: "Submit your mixed results."
+webhookUrl: "https://hook.eu1.make.com/nis72k45hwm88gt1721hc698w36nsfaa"
+contactEmail: "hugo.pauget@dalembert.upmc.fr"

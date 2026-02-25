@@ -1,2 +1,27 @@
-[X] Write audio
-[X] Create test
+# Roadmap & TODO List
+
+This list tracks planned improvements for the WebAudio Listening Test Toolkit.
+
+## High Priority: Stability & Core Experience
+- [ ] **State Persistence (Local Storage):** Save progress in `localStorage`. If a subject accidentally refreshes the page, they should resume at the same round with their previous answers intact.
+- [ ] **Audio Preloading & Loading Indicators:** Ensure all audio for the *current* and *next* round is fully loaded before allowing playback. Add a visual "Loading..." state to the `AudioPlayer`.
+- [ ] **Mobile Responsiveness:** Audit the CSS to ensure the slider and ABX buttons are easy to use on tablets and phones.
+- [ ] **Error Boundaries:** Add more robust error handling if an audio file is missing or the YAML is malformed (e.g., show a clear error message instead of a blank screen).
+
+## Medium Priority: Researcher Features
+- [ ] **Configurable Demographic Form:** Allow researchers to define an "Intro Form" in `config.yaml` (e.g., age, musical experience, hearing issues) that gets included in the final JSON.
+- [ ] **Paradigm Expansion:**
+    - [ ] **MUSHRA Mode:** Support multiple stimuli with a reference.
+    - [ ] **Ranking Mode:** Drag-and-drop sounds to rank them.
+- [ ] **Randomization Control:** Add a `seed` option in the config to allow reproducible "random" shuffles for different subjects.
+- [ ] **CSV Export Fallback:** Provide an option to download results as CSV for easier import into R/Excel.
+
+## Low Priority: Polish & Extras
+- [ ] **Progress Sounds:** Optional "ding" or subtle sound when a round is completed.
+- [ ] **Advanced Styling:** Support a `theme` section in YAML to easily change primary colors and fonts without touching `main.css`.
+- [ ] **Dark Mode:** Add a toggle or support system-level dark mode preferences.
+- [ ] **Deployment Guide:** Add a section to the README on how to host the tool for free using **GitHub Pages** (note: this requires a small workaround for YAML loading or converting YAML to JSON during deployment).
+
+## Technical Debt
+- [ ] **Component Refactor:** Move the inline CSS from `AbxTest.js` and `SimilarityTest.js` to a shared CSS module or utility to reduce duplication.
+- [ ] **Type Safety:** Consider adding JSDoc comments to `main.js` for better IDE support in the absence of TypeScript.
