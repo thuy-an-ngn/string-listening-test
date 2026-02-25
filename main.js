@@ -177,7 +177,7 @@ const saveBtn = document.querySelector('#save-btn')
 
 async function start() {
     try {
-        const response = await fetch('config.yaml');
+        const response = await fetch('config-abx.yaml');
         const yamlText = await response.text();
         CONFIG = jsyaml.load(yamlText);
 

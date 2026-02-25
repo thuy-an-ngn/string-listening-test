@@ -2,6 +2,8 @@
 
 A lightweight, flexible, and researcher-friendly web interface for conducting audio listening tests. This toolkit supports **Similarity Rating**, **ABX Testing**, and even **Mixed Paradigms**—all configurable via a single, human-readable YAML file.
 
+![A screenshot of the application](screenshot.png)
+
 ## Key Features
 
 - **No Build Step:** Uses vanilla JavaScript and Web Components. Works immediately via any local server.
