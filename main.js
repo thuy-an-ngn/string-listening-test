@@ -177,12 +177,13 @@ const saveBtn = document.querySelector('#save-btn')
 
 async function start() {
     try {
-        const response = await fetch('config-abx.yaml');
+        const response = await fetch('config.yaml');
         const yamlText = await response.text();
         CONFIG = jsyaml.load(yamlText);
 
         initUI();
         render(loadTest(CONFIG.test.rounds));
+        console.log(rounds)
     } catch (error) {
         console.error("Failed to initialize the test:", error);
         alert("Error: Could not load configuration. Please check the console for details.");
@@ -261,7 +262,7 @@ saveBtn.addEventListener('click', (e) => {
 
     // We only iterate through the rounds, skipping intro and conclusion
     rounds.forEach((round, i) => {
-        const stepEl = stepElements[i + 1]; // +1 to skip intro
+        const stepEl = stepElements[i + 2]; // Skip intro and familiarization
         const currentType = round.type || CONFIG.testType;
         const selector = currentType === 'abx' ? 'abx-test' : 'similarity-test';
         const testComponent = stepEl.querySelector(selector);
@@ -271,6 +272,7 @@ saveBtn.addEventListener('click', (e) => {
             result: testComponent ? testComponent.getResults() : null
         })
     })
+    console.log(results)
     const json = JSON.stringify(results, null, 2)
     submitTestResults(json)
 })

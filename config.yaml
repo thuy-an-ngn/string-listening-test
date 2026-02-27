@@ -80,5 +80,5 @@ test:
 conclusion:
   buttonText: "Save"
   instruction: "Click on the Save button, then OK, then write your name as the filename and save the JSON file :)"
-webhookUrl: "https://hook.eu1.make.com/nis72k45hwm88gt1721hc698w36nsfaa"
+webhookUrl: "https://hook.eu1.make.com/hkrqujlezwj8aivwx672a8y39td58byj"
 contactEmail: "hugo.pauget@dalembert.upmc.fr"
