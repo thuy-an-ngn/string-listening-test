@@ -1,9 +1,8 @@
-audio-old/
 venv/
 __pycache__
 .vscode
-audio/normalized-old
 codes.csv
 resultats/
 scripts/
 todo.md
+audio/

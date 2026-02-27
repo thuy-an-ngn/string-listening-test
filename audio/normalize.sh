@@ -1,1 +1,0 @@
-ffmpeg-normalize cut/*.wav -ext wav -f --sample-rate 44100 --keep-lra-above-loudness-range-target -p
