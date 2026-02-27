@@ -1,18 +1,15 @@
+let CONFIG;
+
 function shuffle(array) {
     let currentIndex = array.length;
 
-    // While there remain elements to shuffle...
     while (currentIndex != 0) {
-
-        // Pick a remaining element...
         let randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
 
-        // And swap it with the current element.
         [array[currentIndex], array[randomIndex]] = [
             array[randomIndex], array[currentIndex]];
 
-        // Swap a and b
         if (Math.random() > 0.5) {
             [array[currentIndex].a, array[currentIndex].b] = [array[currentIndex].b, array[currentIndex].a]
         }
@@ -20,80 +17,185 @@ function shuffle(array) {
     return array
 }
 
-function loadTest(json) {
-    json.forEach((round, i) => {
+function loadTest(configRounds) {
+    configRounds.forEach((round, i) => {
+        // For ABX, pick a random X if multiple are provided
+        const x = Array.isArray(round.x)
+            ? round.x[Math.floor(Math.random() * round.x.length)]
+            : round.x;
+
         rounds.push({
             id: i,
-            a: `${round[0].violin}-${round[0].player}-${round[0].session}.wav`,
-            b: `${round[1].violin}-${round[1].player}-${round[1].session}.wav`,
+            a: round.a,
+            b: round.b,
+            x: x,
+            type: round.type // Optional override for mixed tests
         })
     })
 
-    // In-Place
     shuffle(rounds)
-    console.log(rounds)
     return rounds
 }
 
 function render(rounds) {
     rounds.forEach((round, i) => {
-        // Create timeline
         let step = document.createElement('li')
         steps.insertBefore(step, steps.lastElementChild)
 
         let formSection = document.createElement('div')
         formSection.classList.add('form-step')
-        formSection.innerHTML = `
-        <similarity-test
-            path-x="${ROOT}/${round.a}"
-            path-y="${ROOT}/${round.b}"
-        >
-        </similarity-test>
-        `
-        form.insertBefore(formSection, form.lastElementChild)
 
+        const currentType = round.type || CONFIG.testType;
+
+        if (currentType === 'abx') {
+            formSection.innerHTML = `
+            <abx-test
+                path-a="${CONFIG.test.audioRoot}${round.a}"
+                path-b="${CONFIG.test.audioRoot}${round.b}"
+                path-x="${CONFIG.test.audioRoot}${round.x}"
+                instruction="${CONFIG.test.abx.instruction}"
+            >
+            </abx-test>
+            `
+        } else {
+            formSection.innerHTML = `
+            <similarity-test
+                path-x="${CONFIG.test.audioRoot}${round.a}"
+                path-y="${CONFIG.test.audioRoot}${round.b}"
+                min="${CONFIG.test.similarity.scale.min}"
+                max="${CONFIG.test.similarity.scale.max}"
+                value="${CONFIG.test.similarity.scale.default}"
+                label-min="${CONFIG.test.similarity.scale.labels.min}"
+                label-max="${CONFIG.test.similarity.scale.labels.max}"
+                instruction="${CONFIG.test.similarity.instruction}"
+            >
+            </similarity-test>
+            `
+        }
+        form.insertBefore(formSection, form.lastElementChild)
     })
 
     updatePage(page)
 }
 
+function validateCurrentStep() {
+    const currentStepEl = form.children[page - 1];
+    const abxComponent = currentStepEl.querySelector('abx-test');
+
+    // Only validate if it's an ABX test and validation is enabled
+    if (abxComponent && CONFIG.test.validate) {
+        const hasAnswer = abxComponent.getResults() !== null;
+        next.setAttribute('data-disabled', !hasAnswer);
+    } else {
+        next.setAttribute('data-disabled', page == form.childElementCount);
+    }
+}
+
 function updatePage(page) {
-    // Pause all audios in the page
-    document.querySelectorAll('similarity-test').forEach(test => test.pause())
+    // Stop all audio players when changing pages
+    document.querySelectorAll('audio-player').forEach(p => p.stop());
+    document.querySelectorAll('similarity-test').forEach(test => test.pause());
+    document.querySelectorAll('abx-test').forEach(test => test.pause());
 
     history.replaceState({}, '', `#${page}`)
 
-    // Update timeline
     progress.style.setProperty('--progress', (page - 1) / (steps.childElementCount - 1))
 
-    // Update prev/next buttons
     prev.setAttribute('data-disabled', page == 1)
-    next.setAttribute('data-disabled', page == form.childElementCount)
 
-    for (child of steps.children) { child.classList.remove('active') }
-    steps.children[page - 1].classList.add('active')
+    if (page > 1 && page < steps.childElementCount) {
+        validateCurrentStep();
+    } else {
+        next.setAttribute('data-disabled', page == form.childElementCount)
+    }
 
-    for (child of form.children) { child.classList.remove('active') }
+    for (let child of steps.children) { child.classList.remove('active') } steps.children[page - 1].classList.add('active')
+
+    for (let child of form.children) { child.classList.remove('active') }
     form.children[page - 1].classList.add('active')
 }
 
-const ROOT = 'audio/faded/'
+// Initial UI Population
+function initUI() {
+    document.getElementById('main-title').innerText = CONFIG.title;
+    document.getElementById('intro-title').innerText = CONFIG.intro.title;
+
+    const introTextContainer = document.getElementById('intro-text');
+    CONFIG.intro.text.forEach(text => {
+        const p = document.createElement('p');
+        p.innerHTML = text;
+        introTextContainer.appendChild(p);
+    });
+
+    document.getElementById('fam-title').innerText = CONFIG.familiarization.title;
+    document.getElementById('fam-text').innerText = CONFIG.familiarization.text;
+
+    const famAudiosContainer = document.getElementById('fam-audios');
+    CONFIG.familiarization.audios.forEach(audioData => {
+        const player = document.createElement('audio-player');
+        player.setAttribute('label', audioData.label);
+        player.setAttribute('src', audioData.src);
+        famAudiosContainer.appendChild(player);
+    });
+
+    document.getElementById('save-btn').innerText = CONFIG.conclusion.buttonText;
+    document.getElementById('conclu-text').innerText = CONFIG.conclusion.instruction;
+}
+
+// Global audio management: pause others when one starts
+window.addEventListener('audio-play', (e) => {
+    const activePlayer = e.detail.player;
+
+    // Stop all other audio players in the document (including inside shadow DOMs)
+    document.querySelectorAll('audio-player').forEach(p => {
+        if (p !== activePlayer) p.stop();
+    });
+
+    // Also stop players inside similarity-test and abx-test components
+    document.querySelectorAll('similarity-test').forEach(test => {
+        if (test.playerX !== activePlayer) test.playerX.stop();
+        if (test.playerY !== activePlayer) test.playerY.stop();
+    });
+    document.querySelectorAll('abx-test').forEach(test => {
+        test.shadowRoot.querySelectorAll('audio-player').forEach(p => {
+            if (p !== activePlayer) p.stop();
+        });
+    });
+});
+
+document.addEventListener('answer-selected', () => {
+    validateCurrentStep();
+});
 
 let rounds = []
-fetch('test.json')
-    .then((response) => response.json())
-    .then((json) => render(loadTest(json)));
-
-let page = window.location.hash ? parseInt(location.hash.substring(1)) : 1
-
 const steps = document.querySelector('#steps')
 const progress = document.querySelector('#progress')
 const form = document.querySelector('form')
-
 const prev = document.querySelector('#prev')
 const next = document.querySelector('#next')
+const saveBtn = document.querySelector('#save-btn')
+
+async function start() {
+    try {
+        const response = await fetch('config.yaml');
+        const yamlText = await response.text();
+        CONFIG = jsyaml.load(yamlText);
+
+        initUI();
+        render(loadTest(CONFIG.test.rounds));
+        console.log(rounds)
+    } catch (error) {
+        console.error("Failed to initialize the test:", error);
+        alert("Error: Could not load configuration. Please check the console for details.");
+    }
+}
+
+start();
+
+let page = window.location.hash ? parseInt(location.hash.substring(1)) : 1
 
 next.addEventListener('click', () => {
+    if (next.getAttribute('data-disabled') === 'true') return;
     page = page < form.childElementCount ? page + 1 : page
     updatePage(page)
 })
@@ -110,60 +212,67 @@ document.addEventListener('keydown', (event) => {
     }
 
     if (event.key == 'ArrowRight') {
+        if (next.getAttribute('data-disabled') === 'true') return;
         page = page < form.childElementCount ? page + 1 : page
         updatePage(page)
     }
 })
 
-function click(button) {
-    let audio = button.querySelector('audio')
-    let paused = audio.paused
+async function submitTestResults(testData) {
+    try {
+        const response = await fetch(CONFIG.webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: testData
+        });
 
-    document.querySelectorAll('audio').forEach(audio => audio.pause())
-    document.querySelectorAll('label').forEach(label => label.classList.remove('active'))
-
-    if (paused) {
-        audio.currentTime = 0
-        audio.play()
-    } else {
-        audio.pause()
+        if (response.ok) {
+            alert("Thank you! Your evaluation has been securely submitted.");
+        } else {
+            throw new Error("Network response was not ok.");
+        }
+    } catch (error) {
+        console.error("Submission failed, falling back to manual download.", error);
+        // Fallback to manual JSON download
+        downloadJSON(testData);
     }
-
-    audio.addEventListener('timeupdate', (e) => {
-        let seekPosition = e.target.currentTime * (100 / e.target.duration)
-        button.style.setProperty('--progress-value', seekPosition)
-    })
-
-    button.classList.add('active')
 }
 
-document.querySelectorAll('.form-step label.audio').forEach(
-    button => button.addEventListener('click', (e) => {
-        click(button)
-    })
-)
+function downloadJSON(testData) {
+    let filename = prompt("Please enter your name or ID for the file:", "results")
+    if (!filename) filename = "results";
+    if (!filename.endsWith('.json')) filename += '.json'
 
-const saveBtn = document.querySelector('#conclu button')
+    const type = "application/json"
+    const a = document.createElement("a")
+    const file = new Blob([testData], { type: type })
+    a.href = URL.createObjectURL(file)
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    alert(`Results saved as ${filename}. If submission failed, please send it manually to ${CONFIG.contactEmail}`);
+}
+
 saveBtn.addEventListener('click', (e) => {
     e.preventDefault()
 
     let results = []
-    document.querySelectorAll('similarity-test').forEach((test, i) => {
+    const stepElements = form.querySelectorAll('.form-step');
+
+    // We only iterate through the rounds, skipping intro and conclusion
+    rounds.forEach((round, i) => {
+        const stepEl = stepElements[i + 2]; // Skip intro and familiarization
+        const currentType = round.type || CONFIG.testType;
+        const selector = currentType === 'abx' ? 'abx-test' : 'similarity-test';
+        const testComponent = stepEl.querySelector(selector);
+
         results.push({
-            test: rounds[i],
-            result: test.getResults()
+            test: round,
+            result: testComponent ? testComponent.getResults() : null
         })
     })
-    const json = JSON.stringify(results)
-    const name = "sample.json"
-    const type = "text/plain"
-
-    // create file
-    const a = document.createElement("a")
-    const file = new Blob([json], { type: type })
-    a.href = URL.createObjectURL(file)
-    a.download = name
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
+    console.log(results)
+    const json = JSON.stringify(results, null, 2)
+    submitTestResults(json)
 })

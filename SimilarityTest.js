@@ -1,38 +1,28 @@
 class SimilarityTest extends HTMLElement {
 
-    root = 'audio/final/'
-
     static get observedAttributes() {
-        return [`path-x`, `path-y`];
+        return [`path-x`, `path-y`, `min`, `max`, `value`, `label-min`, `label-max`, `instruction` ];
     }
 
     constructor() {
         super()
 
         this.shadow = this.attachShadow({ mode: "open" })
-        let id = Math.random().toString(16).slice(2)
+        this.id = Math.random().toString(16).slice(2)
 
         this.shadow.innerHTML = `
         <div class="audios">
-            <label class="audio x" for="${id}-x">
-                X
-                <audio src=""></audio>
-            </label>
-            <label class="audio y" for="${id}-y">
-                Y
-                <audio src=""></audio>
-            </label>
-            <input type="radio" name="${id}" id="${id}-x" value="${id}-x">
-            <input type="radio" name="${id}" id="${id}-y" value="${id}-y">
+            <audio-player id="player-x" label="X"></audio-player>
+            <audio-player id="player-y" label="Y"></audio-player>
         </div>
         <div></div>
-        <p>Les violons X et Y sont :</p>
-        <input type="range" name="" id="" min="0" max="10" value="5" list="values" onkeydown="event.preventDefault()">
+        <p id="instruction-text"></p>
+        <input type="range" name="" id="range-input" min="0" max="10" value="5" list="${this.id}-values" onkeydown="event.preventDefault()">
 
-        <datalist id="values">
-            <option value="0" label="Pas du tout différents"></option>
-            <option value="5" label=""></option>
-            <option value="10" label="Très différents"></option>
+        <datalist id="${this.id}-values">
+            <option value="0" id="opt-min" label=""></option>
+            <option value="5" id="opt-mid" label=""></option>
+            <option value="10" id="opt-max" label=""></option>
         </datalist>
 
         <style>
@@ -43,7 +33,6 @@ class SimilarityTest extends HTMLElement {
             }
             :host {
                 margin: 1em 0 !important;
-                display: block;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -54,11 +43,6 @@ class SimilarityTest extends HTMLElement {
                     flex-direction: row;
                     justify-content: space-between;
                     width: 420px;
-                }
-
-                option {
-                    padding: 0;
-                    // width: 100px;
                 }
 
                 input[type="range"] {
@@ -72,101 +56,76 @@ class SimilarityTest extends HTMLElement {
                     justify-content: center;
                     align-items: center;
                     gap: 5em;
-                }
-
-                & input[type=radio] {
-                    display: none;
-                }
-
-                & label.audio {
-                    --progress-value: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: 0;
-                    padding: 0;
-                    width: 50px;
-                    aspect-ratio: 1;
-                    border-radius: 50%;
-
-                    background:
-                        radial-gradient(closest-side, white 90%, transparent 91% 100%),
-                        conic-gradient(var(--color) calc(var(--progress-value) * 1%), transparent 0);
-
-                    cursor: pointer;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-
-                    transition: all .2s;
-
-                    &.active {
-                        box-shadow: unset;
-                        background:
-                            radial-gradient(closest-side, rgb(221, 221, 255) 80%, white 80%, white 90%, transparent 91% 100%),
-                            conic-gradient(blue calc(var(--progress-value) * 1%), transparent 0);
-                    }
+                    margin-bottom: 1rem;
                 }
             }
         </style>
         `
 
-        this.audioX = this.shadow.querySelector('.audio.x audio')
-        this.audioY = this.shadow.querySelector('.audio.y audio')
+        this.playerX = this.shadow.querySelector('#player-x')
+        this.playerY = this.shadow.querySelector('#player-y')
+        this.range = this.shadow.querySelector('#range-input')
+        this.instructionEl = this.shadow.querySelector('#instruction-text')
+        this.optMin = this.shadow.querySelector('#opt-min')
+        this.optMid = this.shadow.querySelector('#opt-mid')
+        this.optMax = this.shadow.querySelector('#opt-max')
 
-        this.shadow.querySelectorAll('.audio').forEach(
-            button => {
-                button.addEventListener('click', (e) => {
-                    this.click(button)
-                })
-            }
-        )
-
-        this.shadow.querySelector('input[type=range]').addEventListener('input', (e) => {
+        this.range.addEventListener('input', (e) => {
             let value = e.target.value
             this.shadow.querySelector('.audios').style.gap = `${value}em`
         })
-    }
 
-    click(button) {
-        let audio = button.querySelector('audio')
-        let paused = audio.paused
-
-        document.querySelectorAll('similarity-test').forEach(audio => audio.pause())
-
-        if (paused) {
-            audio.currentTime = 0
-            audio.play()
-        } else {
-            audio.pause()
-        }
-
-        audio.addEventListener('timeupdate', (e) => {
-            let seekPosition = e.target.currentTime * (100 / e.target.duration)
-            button.style.setProperty('--progress-value', seekPosition)
-        })
-
-        if (!button.classList.contains('r')) {
-            let other = button.classList.contains('x') ? button.nextElementSibling : button.previousElementSibling
-
-            button.classList.add('active')
-            other.classList.remove('active')
-        }
+        // Handle mutual exclusion between X and Y
+        this.playerX.addEventListener('click', () => this.playerY.setAttribute('active', 'false'));
+        this.playerY.addEventListener('click', () => this.playerX.setAttribute('active', 'false'));
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === `path-x`) {
-            this.audioX.src = newValue
+        switch (name) {
+            case 'path-x':
+                this.playerX.setAttribute('src', newValue);
+                break;
+            case 'path-y':
+                this.playerY.setAttribute('src', newValue);
+                break;
+            case 'min':
+                this.range.min = newValue;
+                this.optMin.value = newValue;
+                this.updateMidpoint();
+                break;
+            case 'max':
+                this.range.max = newValue;
+                this.optMax.value = newValue;
+                this.updateMidpoint();
+                break;
+            case 'value':
+                this.range.value = newValue;
+                break;
+            case 'label-min':
+                this.optMin.label = newValue;
+                break;
+            case 'label-max':
+                this.optMax.label = newValue;
+                break;
+            case 'instruction':
+                this.instructionEl.innerHTML = newValue;
+                break;
         }
-        if (name === `path-y`) {
-            this.audioY.src = newValue
-        }
+    }
+
+    updateMidpoint() {
+        const min = parseInt(this.range.min);
+        const max = parseInt(this.range.max);
+        this.optMid.value = (min + max) / 2;
     }
 
     getResults() {
-        return parseInt(this.shadow.querySelector('input[type=range').value)
+        return parseInt(this.range.value)
     }
 
     pause() {
-        this.shadow.querySelectorAll('audio').forEach(audio => audio.pause())
+        this.playerX.stop();
+        this.playerY.stop();
     }
 
 }

@@ -1,0 +1,39 @@
+title: "ABX Violin Comparison"
+testType: "abx"
+intro:
+  title: "ABX Test"
+  text:
+    - "In each round, you will hear two reference recordings <b>A</b> and <b>B</b>."
+    - "You will then hear a third recording <b>X</b>."
+    - "Your task is to identify which violin was used for <b>X</b> (A or B)."
+familiarization:
+  title: "Warm-up"
+  text: "Listen to these examples to get used to the violins."
+  audios:
+    - label: "A"
+      src: "audio/P1-VA-E1.0.wav"
+    - label: "B"
+      src: "audio/P1-VB-E1.0.wav"
+test:
+  audioRoot: "audio/"
+  validate: true
+  abx:
+    instruction: "Which violin is X?"
+  rounds:
+    - a: "P1-VA-E1.0.wav"
+      b: "P1-VB-E1.0.wav"
+      x: ["P2-VA-E1.1.wav", "P2-VB-E1.0.wav"]
+    - a: "P1-VA-E2.0.wav"
+      b: "P1-VB-E2.0.wav"
+      x: ["P2-VA-E2.1.wav", "P2-VB-E2.0.wav"]
+    - a: "P1-VA-E1.0.wav"
+      b: "P1-VB-E1.0.wav"
+      x: ["P3-VA-E1.0.wav", "P3-VB-E1.0.wav"]
+    - a: "P1-VA-E1.0.wav"
+      b: "P1-VC-E1.1.wav"
+      x: ["P2-VA-E1.1.wav", "P2-VC-E1.0.wav"]
+conclusion:
+  buttonText: "Save Results"
+  instruction: "Thank you! Please save your results."
+webhookUrl: "https://hook.eu1.make.com/nis72k45hwm88gt1721hc698w36nsfaa"
+contactEmail: "hugo.pauget@dalembert.upmc.fr"

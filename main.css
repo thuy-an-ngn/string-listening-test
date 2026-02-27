@@ -1,209 +1,255 @@
 @import url(reset.css);
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+:root {
+    --color-primary: #3b82f6;
+    --color-bg: #ffffff;
+    --color-text: #1f2937;
+    --color-text-muted: #6b7280;
+    --color-border: #e5e7eb;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --max-content-width: 800px;
+    --transition-speed: 0.4s;
+}
 
 html,
 body {
     width: 100%;
     height: 100%;
     font-family: 'Lato', sans-serif;
-
+    color: var(--color-text);
+    background-color: var(--color-bg);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     overflow-x: hidden;
 }
 
 header {
     width: 90%;
+    max-width: var(--max-content-width);
+    padding: 2rem 0;
     position: relative;
-    padding: 2em 0;
+    z-index: 10;
 
-    ol {
+    #steps {
+        list-style: none;
         padding: 0;
         display: flex;
         justify-content: space-between;
-        gap: 0em;
-        counter-reset: steps;
+        counter-reset: steps-counter;
 
         li {
-            width: 1em;
+            width: 1.5rem;
+            height: 1.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            aspect-ratio: 1;
-            text-align: center;
-            background-color: black;
+            background-color: var(--color-text);
+            color: white;
             border-radius: 50%;
-            transition: background .5s;
-            counter-increment: steps;
+            transition: background-color var(--transition-speed);
+            counter-increment: steps-counter;
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 2;
 
             &::after {
-                content: counter(steps);
-                font-size: .8em;
-                color: white;
-                display: block;
-            }
-
-            &:nth-child(2) {
-                counter-set: steps 0;
+                content: counter(steps-counter);
             }
 
             &:first-child::after {
                 content: '\2139';
             }
 
-            &:nth-child(2):after {
-                content: '\2139 \2139';
-                counter-reset: steps;
-            }
-
             &:last-child::after {
                 content: "\1f4be";
             }
-        }
 
-        .active~li {
-            background-color: grey;
+            &.active~li {
+                background-color: var(--color-text-muted);
+            }
         }
     }
 
     #progress {
         --progress: 0;
-        z-index: -1;
         position: absolute;
         top: 50%;
-        transform: translateY(-50%);
+        left: 0;
         height: 2px;
-        width: calc(var(--progress) * 100%);
-        background-color: black;
-        transition: width .5s;
-    }
+        width: 100%;
+        background-color: var(--color-border);
+        z-index: 1;
+        transform: translateY(-50%);
 
+        &::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: calc(var(--progress) * 100%);
+            background-color: var(--color-text);
+            transition: width var(--transition-speed) ease;
+        }
+    }
 }
 
-form {
+main {
     flex: 1;
-    position: relative;
     width: 100%;
+    max-width: var(--max-content-width);
+    display: flex;
+    flex-direction: column; /* Changed to column to allow form to fill height */
 
-    .form-step {
-        --radius: max(8vw, 8vh);
+    form {
+        position: relative;
         width: 100%;
-        position: absolute;
-        top: 0;
-        height: 100%;
-        transition: all .5s;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        flex: 1; /* Make form fill the main area */
 
-        hr {
-            width: 50%;
-        }
-
-        & .label-audio {
+        .form-step {
+            width: 100%;
+            height: 100%; /* Fill the form container */
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 0;
+            left: 0;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%); /* Start off-screen to the right */
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
 
-            &:nth-child(1) {
-                --color: gray;
-                transform: rotate(270deg) translate(var(--radius)) rotate(-270deg);
+            &.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(0); /* Slide into view */
+
+                & ~ .form-step {
+                    transform: translateX(100%); /* Ensure subsequent steps are to the right */
+                }
             }
 
-            &:nth-child(2) {
-                --color: blue;
-                transform: rotate(150deg) translate(var(--radius)) rotate(-150deg);
+            /* This selector targets steps that come BEFORE the active one */
+            &:has(~ .active) {
+                transform: translateX(-100%); /* Move finished steps to the left */
             }
 
-            &:nth-child(3) {
-                --color: blue;
-                transform: rotate(30deg) translate(var(--radius)) rotate(-30deg);
+            #intro {
+                max-width: 650px;
+                line-height: 1.7;
+                text-align: justify;
+
+                h1 {
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    margin-bottom: 1.5rem;
+                    text-align: center;
+                }
+
+                h2 {
+                    font-size: 1.3rem;
+                    font-weight: 700;
+                    margin-bottom: 1rem;
+                }
+
+                p {
+                    margin-bottom: 1rem;
+                }
+            }
+
+            .audios {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 2rem;
+                margin-top: 2rem;
+
+                label.audio {
+                    --progress-value: 0;
+                    --size: 60px;
+                    width: var(--size);
+                    height: var(--size);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    background:
+                        radial-gradient(closest-side, white 85%, transparent 86% 100%),
+                        conic-gradient(var(--color-primary) calc(var(--progress-value) * 1%), var(--color-border) 0);
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px var(--color-shadow);
+                    transition: transform 0.2s, box-shadow 0.2s;
+                    font-weight: bold;
+
+                    &:hover {
+                        transform: translateY(-2px);
+                    }
+
+                    &.active {
+                        background:
+                            radial-gradient(closest-side, #eff6ff 80%, white 81%, white 85%, transparent 86% 100%),
+                            conic-gradient(var(--color-primary) calc(var(--progress-value) * 1%), var(--color-border) 0);
+                        box-shadow: 0 2px 4px var(--color-shadow);
+                    }
+                }
+            }
+
+            #conclu {
+                button {
+                    background-color: var(--color-primary);
+                    color: white;
+                    padding: 1rem 2.5rem;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: filter 0.2s;
+
+                    &:hover {
+                        filter: brightness(1.1);
+                    }
+                }
+
+                p {
+                    margin-top: 1.5rem;
+                }
             }
         }
-
-        transform: translateX(-100%);
-
-        &.active {
-            transform: translateX(0%);
-        }
-
-        &.active~.form-step {
-            transform: translateX(100%);
-        }
-    }
-
-    .form-step #intro {
-        max-width: 80vw;
-        line-height: 1.8;
-        text-align: justify;
     }
 }
 
 footer {
-    display: flex;
     width: 100%;
+    max-width: var(--max-content-width);
+    padding: 1rem 2rem;
+    display: flex;
     justify-content: space-between;
 
     button {
-        width: 10vw;
-        height: 10vw;
-        border: 0;
-        font-size: 3em;
         background: none;
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        padding: 0.5rem 1.5rem;
+        font-size: 2rem;
         cursor: pointer;
+        transition: all 0.2s;
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover:not([data-disabled="true"]) {
+            background-color: var(--color-border);
+        }
 
         &[data-disabled="true"] {
-            color: #bdbdbd;
+            opacity: 0.3;
+            cursor: not-allowed;
         }
-    }
-}
-
-
-
-
-
-/*  */
-
-& .audios {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    gap: 5em;
-}
-
-& input[type=radio] {
-    display: none;
-}
-
-& label.audio {
-    --progress-value: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    padding: 0;
-    width: 50px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-
-    background:
-        radial-gradient(closest-side, white 90%, transparent 91% 100%),
-        conic-gradient(var(--color) calc(var(--progress-value) * 1%), transparent 0);
-
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-
-    transition: all .2s;
-
-    &.active {
-        box-shadow: unset;
-        background:
-            radial-gradient(closest-side, rgb(221, 221, 255) 80%, white 80%, white 90%, transparent 91% 100%),
-            conic-gradient(blue calc(var(--progress-value) * 1%), transparent 0);
     }
 }
