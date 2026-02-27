@@ -5,4 +5,6 @@ codes.csv
 resultats/
 scripts/
 todo.md
-audio/
+audio/*
+!audio/faded/
+!audio/faded/*
