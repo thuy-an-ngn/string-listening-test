@@ -140,6 +140,7 @@ function updatePage(page) {
     form.children[page - 1].classList.add('active')
 }
 
+// Initial UI Population
 function initUI() {
     document.getElementById('main-title').innerText = CONFIG.title;
     document.getElementById('intro-title').innerText = CONFIG.intro.title;
@@ -165,14 +166,16 @@ function initUI() {
     document.getElementById('save-btn').innerText = CONFIG.conclusion.buttonText;
     document.getElementById('conclu-text').innerText = CONFIG.conclusion.instruction;
 }
-
+// Global audio management: pause others when one starts
 window.addEventListener('audio-play', (e) => {
     const activePlayer = e.detail.player;
 
+    // Stop all other audio players in the document (including inside shadow DOMs)
     document.querySelectorAll('audio-player').forEach(p => {
         if (p !== activePlayer) p.stop();
     });
-
+    
+    // Also stop players inside similarity-test and abx-test components
     document.querySelectorAll('similarity-test').forEach(test => {
         if (test.playerX !== activePlayer) test.playerX.stop();
         if (test.playerY !== activePlayer) test.playerY.stop();
