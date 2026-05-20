@@ -1,0 +1,41 @@
+title: "ABXY Violin Comparison"
+testType: "abxy"
+intro:
+  title: "ABXY Test"
+  text:
+    - "In each round, you will hear two reference recordings <b>A</b> and <b>B</b>."
+    - "You will then hear two recordings <b>X</b> <b>Y</b>."
+    - "Your task is to identify which violin was used for <b>X</b> (A or B) and which for <b>Y</b> (A or B)."
+familiarization:
+  title: "Warm-up"
+  text: "Listen to these examples to get used to the violins."
+  audios:
+    - label: "Exemple 1"
+      src: "PZM 1 - 0924 - Vl1-Dynamo-Partita_Pos1.wav"
+    - label: "Exemple 2"
+      src: "PZM 1 - 0943 - Vl1-TI-Partita_Pos1.wav"
+    - label: "Exemple 3"
+      src: "PZM 1 - 1000 - Vl1-VTO-Partita_Pos1.wav"
+test:
+  audioRoot: "audioThuyAn/"
+  validate: true
+  abxy:
+    instruction: "Which violin is X? Which violin is Y?"
+  rounds:
+    - a: "PZM 1 - 0924 - Vl1-Dynamo-Partita_Pos1.wav"
+      b: "PZM 1 - 0943 - Vl1-TI-Partita_Pos1.wav"
+      x: ["PZM 1 - 0932 - Vl1-Dynamo-Partita_Pos1.wav", "PZM 1 - 0944 - Vl1-TI-Partita_Pos1.wav"]
+      y: ["PZM 1 - 0944 - Vl1-TI-Partita_Pos1.wav", "PZM 1 - 0932 - Vl1-Dynamo-Partita_Pos1.wav"]
+    - a: "PZM 1 - 0924 - Vl1-Dynamo-Partita_Pos1.wav"
+      b: "PZM 1 - 1000 - Vl1-VTO-Partita_Pos1.wav"
+      x: ["PZM 1 - 1001 - Vl1-VTO-Partita_Pos1.wav", "PZM 1 - 0932 - Vl1-Dynamo-Partita_Pos1.wav"]
+      y: ["PZM 1 - 0932 - Vl1-Dynamo-Partita_Pos1.wav", "PZM 1 - 1001 - Vl1-VTO-Partita_Pos1.wav"]
+    - a: "PZM 1 - 0943 - Vl1-TI-Partita_Pos1.wav"
+      b: "PZM 1 - 0924 - Vl1-Dynamo-Partita_Pos1.wav"
+      x: ["PZM 1 - 0949 - Vl1-TI-Partita_Pos1.wav", "PZM 1 - 0922 - Vl1-Dynamo-Partita_Pos1.wav"]
+      y: ["PZM 1 - 0922 - Vl1-Dynamo-Partita_Pos1.wav", "PZM 1 - 0949 - Vl1-TI-Partita_Pos1.wav"]
+conclusion:
+  buttonText: "Save Results"
+  instruction: "Thank you! Please save your results."
+webhookUrl: "https://hook.eu1.make.com/nis72k45hwm88gt1721hc698w36nsfaa"
+contactEmail: "hugo.pauget@dalembert.upmc.fr"
