@@ -21,50 +21,42 @@ test:
     instruction: "Which sets are used on X and Y ?"
   rounds:
   ## different take 1
-     - title: "Different Take 1"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V1S1M1E1T2.wav" ## A
        y: "V1S2M1E1T2.wav" ## B
    ## different take 2
-     - title: "Different Take 2"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V1S1M1E1T3.wav" ## A
        y: "V1S2M1E1T3.wav" ## B
   ## different microphone 1
-     - title: "Different Microphone 1"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V1S2M2E1T1.wav" ## B
        y: "V1S1M2E1T1.wav" ## A
   ## different microphone 1
-     - title: "Different Microphone 2"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V1S2M3E1T1.wav" ## B
        y: "V1S1M3E1T1.wav" ## A
   ## different excerpt later
-     - title: "Different Excerpt Later"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V1S1M1E2T1.wav" ## A
        y: "V1S2M1E2T1.wav" ## B
   ## different instrument 1
-     - title: "Different Instrument 1"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V2S1M1E1T1.wav" ## A
        y: "V2S2M1E1T1.wav" ## B
   ## different instrument 2
-     - title: "Different Instrument 2"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V3S2M1E1T1.wav" ## B
        y: "V3S1M1E1T1.wav" ## A
   ## different instrument 3
-     - title: "Different Instrument 3"
-       a: "A.wav"
+     - a: "A.wav"
        b: "B.wav"
        x: "V4S1M1E1T1.wav" ## A
        y: "V4S2M1E1T1.wav" ## B
@@ -72,5 +64,5 @@ test:
 conclusion:
   buttonText: "Save Results"
   instruction: "Thank you! Please save your results."
-webhookUrl: "https://hook.eu1.make.com/nis72k45hwm88gt1721hc698w36nsfaa"
-contactEmail: "hugo.pauget@dalembert.upmc.fr"
+webhookUrl: "https://webhook.site/a9bc10a0-440b-49f1-8ba5-e16ee60353b6"
+contactEmail: "thuy-an.nguyen@grenoble-inp.org"

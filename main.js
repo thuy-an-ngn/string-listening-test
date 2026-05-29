@@ -7,19 +7,19 @@ const prev = document.querySelector('#prev');
 const next = document.querySelector('#next');
 const saveBtn = document.querySelector('#save-btn');
 
-// Gardée au cas où, mais non appelée pour respecter l'ordre du YAML
-function shuffle(array) {
-    let currentIndex = array.length;
-    while (currentIndex != 0) {
-        let randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-        if (Math.random() > 0.5) {
-            [array[currentIndex].a, array[currentIndex].b] = [array[currentIndex].b, array[currentIndex].a];
-        }
-    }
-    return array;
-}
+// // Gardée au cas où
+// function shuffle(array) {
+//     let currentIndex = array.length;
+//     while (currentIndex != 0) {
+//         let randomIndex = Math.floor(Math.random() * currentIndex);
+//         currentIndex--;
+//         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+//         if (Math.random() > 0.5) {
+//             [array[currentIndex].a, array[currentIndex].b] = [array[currentIndex].b, array[currentIndex].a];
+//         }
+//     }
+//     return array;
+// }
 
 function loadTest(configRounds) {
     configRounds.forEach((round, i) => {
@@ -35,7 +35,6 @@ function loadTest(configRounds) {
 
         rounds.push({
             id: i,
-            title: round.title || `Round ${i + 1}`, // Ajout du titre (fallback si absent du YAML)
             a: round.a,
             b: round.b,
             x: x,
@@ -44,7 +43,7 @@ function loadTest(configRounds) {
         });
     });
 
-    // shuffle(rounds) <--- LIGNE DÉSACTIVÉE pour garder l'ordre d'écriture du YAML
+    // shuffle(rounds) <--- LIGNE DÉSACTIVÉE pour garder l'ordre d'écriture
     return rounds;
 }
 
@@ -58,11 +57,9 @@ function render(rounds) {
 
         const currentType = round.type || CONFIG.testType;
         
-        // Structure HTML du titre pour chaque round
-        const titleHTML = `<h3 class="round-title" style="text-align: center; margin-bottom: 20px;">${round.title}</h3>`;
 
         if (currentType === 'abx') {
-            formSection.innerHTML = titleHTML + `
+            formSection.innerHTML = `
             <abx-test
                 path-a="${CONFIG.test.audioRoot}${round.a}"
                 path-b="${CONFIG.test.audioRoot}${round.b}"
@@ -70,9 +67,9 @@ function render(rounds) {
                 instruction="${CONFIG.test.abx.instruction}"
             >
             </abx-test>
-            `;
+            `
         } else if (currentType === 'abxy') {
-            formSection.innerHTML = titleHTML + `
+            formSection.innerHTML = `
             <abxy-test
                 path-a="${CONFIG.test.audioRoot}${round.a}"
                 path-b="${CONFIG.test.audioRoot}${round.b}"
@@ -82,7 +79,7 @@ function render(rounds) {
             >
             </abxy-test>`;
         } else {
-            formSection.innerHTML = titleHTML + `
+            formSection.innerHTML = `
             <similarity-test
                 path-x="${CONFIG.test.audioRoot}${round.a}"
                 path-y="${CONFIG.test.audioRoot}${round.b}"
@@ -94,7 +91,7 @@ function render(rounds) {
                 instruction="${CONFIG.test.similarity.instruction}"
             >
             </similarity-test>
-            `;
+            `
         }
         form.insertBefore(formSection, form.lastElementChild);
     });
@@ -268,7 +265,7 @@ function downloadJSON(testData) {
     document.body.appendChild(a);
     a.click();
     a.remove();
-    alert(`Results saved as ${filename}. If submission failed, please send it manually to ${CONFIG.contactEmail}`);
+    alert(`Results saved as ${filename}. Please send it manually to ${CONFIG.contactEmail}`);
 }
 
 // CORRECTION BULLETPROOF CONTRE LES RÉSULTATS NULL
